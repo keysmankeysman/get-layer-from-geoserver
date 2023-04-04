@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <button @click="getMapLayer()">Кнопка</button>
     <div id="simple-map" class="map"></div>
   </div>
 </template>
@@ -10,6 +11,9 @@ import Map from 'ol/map'
 import OSM from 'ol/source/osm'
 import TileLayer from 'ol/layer/tile'
 import View from 'ol/view'
+
+import Image from 'ol/layer/image'
+import ImageWMS from 'ol/source/imagewms'
 
 export default {
   name: "app",
@@ -28,6 +32,10 @@ export default {
         "children": [],
         "style": {},
         "cqlFilter": null
+      },
+      params: {
+        "LAYERS": "fpd:l_isogd_documents_without_inzh",
+        "VERSION": "1.3.0"
       }
     }
   },
@@ -43,7 +51,7 @@ export default {
     })
 
     this.map = new Map({
-      layers: [ layers ],
+      layers: [ layers, this.getMapLayer() ],
       target: 'simple-map',
       view: view
     })
@@ -52,7 +60,17 @@ export default {
 
   },
   methods: {
-
+    getMapLayer() {
+      let mapLayer = new Image({
+        source: new ImageWMS({
+          url: this.layerZones.url,
+          params: this.params,
+          crossOrigin: 'anonymous',
+          imageLoadFunction: undefined
+        })
+      })
+      return mapLayer
+    }
   }
 }
 </script>
