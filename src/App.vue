@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <button @click="getMapLayer()">Кнопка</button>
+    <button @click="sendRequest()">Запрос</button>
     <div id="simple-map" class="map"></div>
   </div>
 </template>
@@ -14,29 +15,30 @@ import View from 'ol/view'
 
 import Image from 'ol/layer/image'
 import ImageWMS from 'ol/source/imagewms'
+import axios from 'axios'
 
 export default {
-  name: "app",
+  name: 'app',
   data () {
     return {
       map: null,
       layer: null,
       layerZones: {
-        "id": "2bd50162-47f0-45b6-9546-7c4edb4e0d16",
-        "name": "Зоны дд",
-        "layers": "fpd:l_isogd_documents_without_inzh",
-        "url": "/geoserver/ows",
-        "type": 10,
-        "itemType": "layer",
-        "visible": true,
-        "children": [],
-        "style": {},
-        "cqlFilter": null
+        id: '2bd50162-47f0-45b6-9546-7c4edb4e0d16',
+        name: 'Зоны дд',
+        layers: 'fpd:l_isogd_documents_without_inzh',
+        url: '/geoserver/ows',
+        type: 10,
+        itemType: 'layer',
+        visible: true,
+        children: [],
+        style: {},
+        cqlFilter: null
       },
       params: {
-        "LAYERS": "fpd:l_isogd_documents_without_inzh",
-        "VERSION": "1.3.0"
-      }
+        LAYERS: 'fpd:l_isogd_documents_without_inzh',
+        VERSION: '1.3.0'
+      },
     }
   },
   mounted() {
@@ -51,10 +53,12 @@ export default {
     })
 
     this.map = new Map({
-      layers: [ layers, this.getMapLayer() ],
+      layers: [ layers ],
       target: 'simple-map',
       view: view
     })
+    let layer = this.getMapLayer()
+    this.map.addLayer(layer)
   },
   watch: {
 
@@ -69,7 +73,13 @@ export default {
           imageLoadFunction: undefined
         })
       })
+      console.log('mapLayer', mapLayer)
       return mapLayer
+    },
+    async sendRequest() {
+      // axios.get('/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=fpd%3Aall_boundaries_oktmo')
+      axios.get('/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=fpd%3Al_isogd_documents&CRS=EPSG%3A3857&STYLES=&WIDTH=894&HEIGHT=1254&BBOX=2965756.6974648386%2C7691399.534167575%2C4059111.9500559997%2C9225032.069681352')
+        .then(res => console.log(res))
     }
   }
 }
