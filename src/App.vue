@@ -67,7 +67,7 @@ export default {
             LAYERS: 'fpd:l_isogd_documents',
             VERSION: '1.3.0'
           },
-          crossOrigin: 'anonymous',
+          // crossOrigin: 'anonymous',
           imageLoadFunction: undefined
         }),
         opacity,
