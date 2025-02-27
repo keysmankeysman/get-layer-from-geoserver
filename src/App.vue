@@ -101,11 +101,9 @@ export default {
       
     },
     async sendRequest() {
-      // axios.get('/geoserver/ows?service=WMS&request=GetLegendGraphic&format=image%2Fpng&width=20&height=20&layer=fpd%3Aall_boundaries_oktmo')
-      // const { data: result } = await axios.get('/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=fpd%3Al_isogd_documents&CRS=EPSG%3A3857&STYLES=&WIDTH=894&HEIGHT=1254&BBOX=2965756.6974648386%2C7691399.534167575%2C4059111.9500559997%2C9225032.069681352')
-      const { data: result } = await axios.get('/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=isogd_10pr%3Acemetery&CRS=EPSG%3A3857&STYLES=&WIDTH=1722&HEIGHT=1454&BBOX=2398288.1994756903%2C7510396.651188278%2C4504281.202788867%2C9288627.677214619')
+      const { data: result } = await axios.get(`/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&LAYERS=isogd_10pr%3Acemetery&CRS=EPSG%3A3857&STYLES=&WIDTH=1722&HEIGHT=1454&BBOX=2398288.1994756903%2C7510396.651188278%2C4504281.202788867%2C9288627.677214619`)
+      console.log('result', result)
       return result 
-      // this.map.addLayer(layer)
     }
   }
 }
